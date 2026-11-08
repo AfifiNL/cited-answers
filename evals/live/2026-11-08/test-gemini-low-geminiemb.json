@@ -1,0 +1,1173 @@
+{
+  "generated_at": "2026-11-08T18:13:57Z",
+  "config": {
+    "model": "gemini:gemini-3.6-flash:thinking-low",
+    "embedder": "gemini:gemini-embedding-001:768",
+    "store": "memory",
+    "corpus_version": "cbd4f9deaa0bc9cd"
+  },
+  "metrics": {
+    "all": {
+      "items": 43,
+      "answerable": 33,
+      "unanswerable": 10,
+      "faithfulness": 1.0,
+      "citation_precision": 0.9531,
+      "citation_hit_rate": 0.9688,
+      "refusal_accuracy": 0.9767,
+      "unsafe_answer_rate": 0.0,
+      "false_refusal_rate": 0.0303,
+      "retrieval_recall": 1.0,
+      "claims": 80
+    },
+    "test": {
+      "items": 43,
+      "answerable": 33,
+      "unanswerable": 10,
+      "faithfulness": 1.0,
+      "citation_precision": 0.9531,
+      "citation_hit_rate": 0.9688,
+      "refusal_accuracy": 0.9767,
+      "unsafe_answer_rate": 0.0,
+      "false_refusal_rate": 0.0303,
+      "retrieval_recall": 1.0,
+      "claims": 80
+    }
+  },
+  "by_category": {
+    "ai_act": {
+      "items": 17,
+      "answerable": 17,
+      "unanswerable": 0,
+      "faithfulness": 1.0,
+      "citation_precision": 0.9118,
+      "citation_hit_rate": 0.9412,
+      "refusal_accuracy": 1.0,
+      "unsafe_answer_rate": 0.0,
+      "false_refusal_rate": 0.0,
+      "retrieval_recall": 1.0,
+      "claims": 43
+    },
+    "gdpr": {
+      "items": 16,
+      "answerable": 16,
+      "unanswerable": 0,
+      "faithfulness": 1.0,
+      "citation_precision": 1.0,
+      "citation_hit_rate": 1.0,
+      "refusal_accuracy": 0.9375,
+      "unsafe_answer_rate": 0.0,
+      "false_refusal_rate": 0.0625,
+      "retrieval_recall": 1.0,
+      "claims": 37
+    },
+    "out_of_scope": {
+      "items": 10,
+      "answerable": 0,
+      "unanswerable": 10,
+      "faithfulness": 1.0,
+      "citation_precision": 0.0,
+      "citation_hit_rate": 0.0,
+      "refusal_accuracy": 1.0,
+      "unsafe_answer_rate": 0.0,
+      "false_refusal_rate": 0.0,
+      "retrieval_recall": 0.0,
+      "claims": 0
+    }
+  },
+  "items": [
+    {
+      "id": "g02",
+      "split": "test",
+      "category": "gdpr",
+      "question": "How quickly must a controller tell the supervisory authority about a personal data breach?",
+      "answerable": true,
+      "gold": [
+        "gdpr:art33"
+      ],
+      "status": "answered",
+      "refusal_code": null,
+      "cited": [
+        "gdpr:art33"
+      ],
+      "retrieved_articles": [
+        "gdpr:art33",
+        "gdpr:art34",
+        "gdpr:art70",
+        "gdpr:art58"
+      ],
+      "precision": 1.0,
+      "claims_total": 2,
+      "claims_supported": 2,
+      "unsupported": []
+    },
+    {
+      "id": "g04",
+      "split": "test",
+      "category": "gdpr",
+      "question": "What must a controller be able to demonstrate when processing is based on consent?",
+      "answerable": true,
+      "gold": [
+        "gdpr:art7"
+      ],
+      "status": "answered",
+      "refusal_code": null,
+      "cited": [
+        "gdpr:art7"
+      ],
+      "retrieved_articles": [
+        "gdpr:art7",
+        "gdpr:art5",
+        "gdpr:art24",
+        "gdpr:art13",
+        "gdpr:art28",
+        "gdpr:art14"
+      ],
+      "precision": 1.0,
+      "claims_total": 1,
+      "claims_supported": 1,
+      "unsupported": []
+    },
+    {
+      "id": "g06",
+      "split": "test",
+      "category": "gdpr",
+      "question": "In which cases must an organisation designate a data protection officer?",
+      "answerable": true,
+      "gold": [
+        "gdpr:art37"
+      ],
+      "status": "answered",
+      "refusal_code": null,
+      "cited": [
+        "gdpr:art37"
+      ],
+      "retrieved_articles": [
+        "gdpr:art37",
+        "gdpr:art35",
+        "gdpr:art47",
+        "gdpr:art38"
+      ],
+      "precision": 1.0,
+      "claims_total": 4,
+      "claims_supported": 4,
+      "unsupported": []
+    },
+    {
+      "id": "g08",
+      "split": "test",
+      "category": "gdpr",
+      "question": "Can I receive my personal data in a machine-readable format and move it to another service?",
+      "answerable": true,
+      "gold": [
+        "gdpr:art20"
+      ],
+      "status": "answered",
+      "refusal_code": null,
+      "cited": [
+        "gdpr:art20"
+      ],
+      "retrieved_articles": [
+        "gdpr:art20",
+        "gdpr:art12",
+        "gdpr:art44",
+        "gdpr:art49",
+        "gdpr:art15",
+        "gdpr:art28",
+        "gdpr:art61"
+      ],
+      "precision": 1.0,
+      "claims_total": 3,
+      "claims_supported": 3,
+      "unsupported": []
+    },
+    {
+      "id": "g10",
+      "split": "test",
+      "category": "gdpr",
+      "question": "Is processing of health data or biometric data allowed?",
+      "answerable": true,
+      "gold": [
+        "gdpr:art9"
+      ],
+      "status": "answered",
+      "refusal_code": null,
+      "cited": [
+        "gdpr:art9"
+      ],
+      "retrieved_articles": [
+        "gdpr:art9",
+        "ai_act:art5",
+        "gdpr:art4",
+        "ai_act:art3"
+      ],
+      "precision": 1.0,
+      "claims_total": 3,
+      "claims_supported": 3,
+      "unsupported": []
+    },
+    {
+      "id": "g12",
+      "split": "test",
+      "category": "gdpr",
+      "question": "Do I have the right not to be subject to a decision based solely on automated processing?",
+      "answerable": true,
+      "gold": [
+        "gdpr:art22"
+      ],
+      "status": "answered",
+      "refusal_code": null,
+      "cited": [
+        "gdpr:art22"
+      ],
+      "retrieved_articles": [
+        "gdpr:art22",
+        "gdpr:art47",
+        "gdpr:art21",
+        "gdpr:art14"
+      ],
+      "precision": 1.0,
+      "claims_total": 2,
+      "claims_supported": 2,
+      "unsupported": []
+    },
+    {
+      "id": "g14",
+      "split": "test",
+      "category": "gdpr",
+      "question": "What must a contract between a controller and a processor contain?",
+      "answerable": true,
+      "gold": [
+        "gdpr:art28"
+      ],
+      "status": "answered",
+      "refusal_code": null,
+      "cited": [
+        "gdpr:art28"
+      ],
+      "retrieved_articles": [
+        "gdpr:art28",
+        "gdpr:art30",
+        "gdpr:art37",
+        "gdpr:art29",
+        "gdpr:art27"
+      ],
+      "precision": 1.0,
+      "claims_total": 4,
+      "claims_supported": 4,
+      "unsupported": []
+    },
+    {
+      "id": "g16",
+      "split": "test",
+      "category": "gdpr",
+      "question": "When may personal data be transferred to a third country on the basis of an adequacy decision?",
+      "answerable": true,
+      "gold": [
+        "gdpr:art45"
+      ],
+      "status": "answered",
+      "refusal_code": null,
+      "cited": [
+        "gdpr:art45"
+      ],
+      "retrieved_articles": [
+        "gdpr:art45",
+        "gdpr:art49",
+        "gdpr:art46",
+        "gdpr:art44"
+      ],
+      "precision": 1.0,
+      "claims_total": 2,
+      "claims_supported": 2,
+      "unsupported": []
+    },
+    {
+      "id": "g18",
+      "split": "test",
+      "category": "gdpr",
+      "question": "When must the data subjects themselves be informed of a personal data breach?",
+      "answerable": true,
+      "gold": [
+        "gdpr:art34"
+      ],
+      "status": "answered",
+      "refusal_code": null,
+      "cited": [
+        "gdpr:art34"
+      ],
+      "retrieved_articles": [
+        "gdpr:art34",
+        "gdpr:art33",
+        "gdpr:art4",
+        "gdpr:art14"
+      ],
+      "precision": 1.0,
+      "claims_total": 1,
+      "claims_supported": 1,
+      "unsupported": []
+    },
+    {
+      "id": "g20",
+      "split": "test",
+      "category": "gdpr",
+      "question": "When can a data subject object to processing for direct marketing?",
+      "answerable": true,
+      "gold": [
+        "gdpr:art21"
+      ],
+      "status": "answered",
+      "refusal_code": null,
+      "cited": [
+        "gdpr:art21"
+      ],
+      "retrieved_articles": [
+        "gdpr:art21",
+        "gdpr:art17",
+        "gdpr:art14",
+        "gdpr:art18",
+        "gdpr:art13",
+        "gdpr:art4"
+      ],
+      "precision": 1.0,
+      "claims_total": 1,
+      "claims_supported": 1,
+      "unsupported": []
+    },
+    {
+      "id": "g22",
+      "split": "test",
+      "category": "gdpr",
+      "question": "How does the GDPR define personal data?",
+      "answerable": true,
+      "gold": [
+        "gdpr:art4"
+      ],
+      "status": "refused",
+      "refusal_code": "model_declined",
+      "cited": [],
+      "retrieved_articles": [
+        "gdpr:art4",
+        "gdpr:art2",
+        "gdpr:art1",
+        "gdpr:art13",
+        "gdpr:art5"
+      ],
+      "precision": null,
+      "claims_total": 0,
+      "claims_supported": 0,
+      "unsupported": []
+    },
+    {
+      "id": "g24",
+      "split": "test",
+      "category": "gdpr",
+      "question": "When does a data subject have the right to restriction of processing?",
+      "answerable": true,
+      "gold": [
+        "gdpr:art18"
+      ],
+      "status": "answered",
+      "refusal_code": null,
+      "cited": [
+        "gdpr:art18"
+      ],
+      "retrieved_articles": [
+        "gdpr:art18",
+        "gdpr:art23",
+        "gdpr:art15",
+        "gdpr:art13",
+        "gdpr:art14"
+      ],
+      "precision": 1.0,
+      "claims_total": 4,
+      "claims_supported": 4,
+      "unsupported": []
+    },
+    {
+      "id": "g26",
+      "split": "test",
+      "category": "gdpr",
+      "question": "Where can a data subject lodge a complaint if they think processing of their personal data infringes the GDPR?",
+      "answerable": true,
+      "gold": [
+        "gdpr:art77"
+      ],
+      "status": "answered",
+      "refusal_code": null,
+      "cited": [
+        "gdpr:art77"
+      ],
+      "retrieved_articles": [
+        "gdpr:art77",
+        "gdpr:art80",
+        "gdpr:art79",
+        "gdpr:art56",
+        "gdpr:art4",
+        "gdpr:art57",
+        "gdpr:art47"
+      ],
+      "precision": 1.0,
+      "claims_total": 1,
+      "claims_supported": 1,
+      "unsupported": []
+    },
+    {
+      "id": "g28",
+      "split": "test",
+      "category": "gdpr",
+      "question": "What tasks does a data protection officer have?",
+      "answerable": true,
+      "gold": [
+        "gdpr:art39"
+      ],
+      "status": "answered",
+      "refusal_code": null,
+      "cited": [
+        "gdpr:art39"
+      ],
+      "retrieved_articles": [
+        "gdpr:art38",
+        "gdpr:art39",
+        "gdpr:art37"
+      ],
+      "precision": 1.0,
+      "claims_total": 5,
+      "claims_supported": 5,
+      "unsupported": []
+    },
+    {
+      "id": "g30",
+      "split": "test",
+      "category": "gdpr",
+      "question": "What is GDPR Article 12 about?",
+      "answerable": true,
+      "gold": [
+        "gdpr:art12"
+      ],
+      "status": "answered",
+      "refusal_code": null,
+      "cited": [
+        "gdpr:art12"
+      ],
+      "retrieved_articles": [
+        "gdpr:art12",
+        "gdpr:art4",
+        "gdpr:art60",
+        "gdpr:art70",
+        "gdpr:art42",
+        "gdpr:art5"
+      ],
+      "precision": 1.0,
+      "claims_total": 3,
+      "claims_supported": 3,
+      "unsupported": []
+    },
+    {
+      "id": "g32",
+      "split": "test",
+      "category": "gdpr",
+      "question": "What may a processor not do without the prior written authorisation of the controller?",
+      "answerable": true,
+      "gold": [
+        "gdpr:art28"
+      ],
+      "status": "answered",
+      "refusal_code": null,
+      "cited": [
+        "gdpr:art28"
+      ],
+      "retrieved_articles": [
+        "gdpr:art28",
+        "gdpr:art36",
+        "gdpr:art4",
+        "gdpr:art29"
+      ],
+      "precision": 1.0,
+      "claims_total": 1,
+      "claims_supported": 1,
+      "unsupported": []
+    },
+    {
+      "id": "a02",
+      "split": "test",
+      "category": "ai_act",
+      "question": "Must people be told when they are interacting with an AI system such as a chatbot?",
+      "answerable": true,
+      "gold": [
+        "ai_act:art50"
+      ],
+      "status": "answered",
+      "refusal_code": null,
+      "cited": [
+        "ai_act:art50"
+      ],
+      "retrieved_articles": [
+        "ai_act:art50",
+        "ai_act:art26",
+        "ai_act:art14",
+        "ai_act:art3",
+        "ai_act:art2",
+        "ai_act:art5"
+      ],
+      "precision": 1.0,
+      "claims_total": 3,
+      "claims_supported": 3,
+      "unsupported": []
+    },
+    {
+      "id": "a04",
+      "split": "test",
+      "category": "ai_act",
+      "question": "When is an AI system considered high-risk?",
+      "answerable": true,
+      "gold": [
+        "ai_act:art6",
+        "ai_act:anxIII"
+      ],
+      "status": "answered",
+      "refusal_code": null,
+      "cited": [
+        "ai_act:art6"
+      ],
+      "retrieved_articles": [
+        "ai_act:art6",
+        "ai_act:art7",
+        "ai_act:anxIII",
+        "ai_act:anxVIII",
+        "ai_act:art25",
+        "ai_act:art71"
+      ],
+      "precision": 1.0,
+      "claims_total": 3,
+      "claims_supported": 3,
+      "unsupported": []
+    },
+    {
+      "id": "a06",
+      "split": "test",
+      "category": "ai_act",
+      "question": "Which deployers must carry out a fundamental rights impact assessment?",
+      "answerable": true,
+      "gold": [
+        "ai_act:art27"
+      ],
+      "status": "answered",
+      "refusal_code": null,
+      "cited": [
+        "ai_act:art27"
+      ],
+      "retrieved_articles": [
+        "ai_act:art27",
+        "ai_act:anxVIII",
+        "ai_act:art26",
+        "gdpr:art35"
+      ],
+      "precision": 1.0,
+      "claims_total": 2,
+      "claims_supported": 2,
+      "unsupported": []
+    },
+    {
+      "id": "a08",
+      "split": "test",
+      "category": "ai_act",
+      "question": "What does the risk management system for high-risk AI systems involve?",
+      "answerable": true,
+      "gold": [
+        "ai_act:art9"
+      ],
+      "status": "answered",
+      "refusal_code": null,
+      "cited": [
+        "ai_act:art9"
+      ],
+      "retrieved_articles": [
+        "ai_act:art9",
+        "ai_act:art17",
+        "ai_act:anxIV",
+        "ai_act:art8"
+      ],
+      "precision": 1.0,
+      "claims_total": 6,
+      "claims_supported": 6,
+      "unsupported": []
+    },
+    {
+      "id": "a10",
+      "split": "test",
+      "category": "ai_act",
+      "question": "What must the technical documentation of a high-risk AI system contain?",
+      "answerable": true,
+      "gold": [
+        "ai_act:art11",
+        "ai_act:anxIV"
+      ],
+      "status": "answered",
+      "refusal_code": null,
+      "cited": [
+        "ai_act:art11"
+      ],
+      "retrieved_articles": [
+        "ai_act:art11",
+        "ai_act:anxIV",
+        "ai_act:anxVII",
+        "ai_act:anxXI",
+        "ai_act:art18"
+      ],
+      "precision": 1.0,
+      "claims_total": 2,
+      "claims_supported": 2,
+      "unsupported": []
+    },
+    {
+      "id": "a12",
+      "split": "test",
+      "category": "ai_act",
+      "question": "What are the requirements on accuracy, robustness and cybersecurity?",
+      "answerable": true,
+      "gold": [
+        "ai_act:art15"
+      ],
+      "status": "answered",
+      "refusal_code": null,
+      "cited": [
+        "ai_act:art15",
+        "ai_act:art13"
+      ],
+      "retrieved_articles": [
+        "ai_act:art15",
+        "ai_act:art58",
+        "ai_act:art13",
+        "ai_act:art31",
+        "ai_act:anxIV",
+        "ai_act:art42"
+      ],
+      "precision": 0.5,
+      "claims_total": 3,
+      "claims_supported": 3,
+      "unsupported": []
+    },
+    {
+      "id": "a14",
+      "split": "test",
+      "category": "ai_act",
+      "question": "When is a general-purpose AI model classified as having systemic risk?",
+      "answerable": true,
+      "gold": [
+        "ai_act:art51",
+        "ai_act:anxXIII"
+      ],
+      "status": "answered",
+      "refusal_code": null,
+      "cited": [
+        "ai_act:art51"
+      ],
+      "retrieved_articles": [
+        "ai_act:art51",
+        "ai_act:art52",
+        "ai_act:art55",
+        "ai_act:anxXIII"
+      ],
+      "precision": 1.0,
+      "claims_total": 1,
+      "claims_supported": 1,
+      "unsupported": []
+    },
+    {
+      "id": "a16",
+      "split": "test",
+      "category": "ai_act",
+      "question": "When does the AI Act enter into force and from when does it apply?",
+      "answerable": true,
+      "gold": [
+        "ai_act:art113"
+      ],
+      "status": "answered",
+      "refusal_code": null,
+      "cited": [
+        "ai_act:art113"
+      ],
+      "retrieved_articles": [
+        "ai_act:art113",
+        "ai_act:art97",
+        "ai_act:art3",
+        "ai_act:art2",
+        "ai_act:art112",
+        "ai_act:art81"
+      ],
+      "precision": 1.0,
+      "claims_total": 5,
+      "claims_supported": 5,
+      "unsupported": []
+    },
+    {
+      "id": "a18",
+      "split": "test",
+      "category": "ai_act",
+      "question": "What are AI regulatory sandboxes?",
+      "answerable": true,
+      "gold": [
+        "ai_act:art57",
+        "ai_act:art58"
+      ],
+      "status": "answered",
+      "refusal_code": null,
+      "cited": [
+        "ai_act:art3"
+      ],
+      "retrieved_articles": [
+        "ai_act:art58",
+        "ai_act:art57",
+        "ai_act:art3",
+        "ai_act:art59"
+      ],
+      "precision": 0.0,
+      "claims_total": 1,
+      "claims_supported": 1,
+      "unsupported": []
+    },
+    {
+      "id": "a20",
+      "split": "test",
+      "category": "ai_act",
+      "question": "What must a quality management system for high-risk AI systems cover?",
+      "answerable": true,
+      "gold": [
+        "ai_act:art17"
+      ],
+      "status": "answered",
+      "refusal_code": null,
+      "cited": [
+        "ai_act:art17"
+      ],
+      "retrieved_articles": [
+        "ai_act:art17",
+        "ai_act:anxVII",
+        "ai_act:art9"
+      ],
+      "precision": 1.0,
+      "claims_total": 3,
+      "claims_supported": 3,
+      "unsupported": []
+    },
+    {
+      "id": "a22",
+      "split": "test",
+      "category": "ai_act",
+      "question": "Does a person affected by a decision based on a high-risk AI system have a right to an explanation?",
+      "answerable": true,
+      "gold": [
+        "ai_act:art86"
+      ],
+      "status": "answered",
+      "refusal_code": null,
+      "cited": [
+        "ai_act:art86"
+      ],
+      "retrieved_articles": [
+        "ai_act:art86",
+        "ai_act:art26",
+        "ai_act:art27",
+        "ai_act:art14",
+        "ai_act:art6",
+        "ai_act:art50"
+      ],
+      "precision": 1.0,
+      "claims_total": 3,
+      "claims_supported": 3,
+      "unsupported": []
+    },
+    {
+      "id": "a24",
+      "split": "test",
+      "category": "ai_act",
+      "question": "Does the AI Act apply to AI systems used exclusively for military purposes?",
+      "answerable": true,
+      "gold": [
+        "ai_act:art2"
+      ],
+      "status": "answered",
+      "refusal_code": null,
+      "cited": [
+        "ai_act:art2"
+      ],
+      "retrieved_articles": [
+        "ai_act:art2",
+        "ai_act:art3",
+        "ai_act:anxIII"
+      ],
+      "precision": 1.0,
+      "claims_total": 1,
+      "claims_supported": 1,
+      "unsupported": []
+    },
+    {
+      "id": "a26",
+      "split": "test",
+      "category": "ai_act",
+      "question": "Are AI systems used for recruitment or to filter job applications high-risk?",
+      "answerable": true,
+      "gold": [
+        "ai_act:anxIII",
+        "ai_act:art6"
+      ],
+      "status": "answered",
+      "refusal_code": null,
+      "cited": [
+        "ai_act:anxIII"
+      ],
+      "retrieved_articles": [
+        "ai_act:anxIII",
+        "ai_act:art26",
+        "ai_act:art14",
+        "ai_act:art7"
+      ],
+      "precision": 1.0,
+      "claims_total": 1,
+      "claims_supported": 1,
+      "unsupported": []
+    },
+    {
+      "id": "a28",
+      "split": "test",
+      "category": "ai_act",
+      "question": "What must deployers disclose about deep fakes?",
+      "answerable": true,
+      "gold": [
+        "ai_act:art50"
+      ],
+      "status": "answered",
+      "refusal_code": null,
+      "cited": [
+        "ai_act:art50"
+      ],
+      "retrieved_articles": [
+        "ai_act:art50",
+        "ai_act:art3",
+        "ai_act:art13",
+        "ai_act:art26"
+      ],
+      "precision": 1.0,
+      "claims_total": 2,
+      "claims_supported": 2,
+      "unsupported": []
+    },
+    {
+      "id": "a30",
+      "split": "test",
+      "category": "ai_act",
+      "question": "What are the obligations of importers of high-risk AI systems?",
+      "answerable": true,
+      "gold": [
+        "ai_act:art23"
+      ],
+      "status": "answered",
+      "refusal_code": null,
+      "cited": [
+        "ai_act:art23"
+      ],
+      "retrieved_articles": [
+        "ai_act:art23",
+        "ai_act:art24",
+        "ai_act:art25",
+        "ai_act:art26"
+      ],
+      "precision": 1.0,
+      "claims_total": 4,
+      "claims_supported": 4,
+      "unsupported": []
+    },
+    {
+      "id": "a32",
+      "split": "test",
+      "category": "ai_act",
+      "question": "Can AI be used for social scoring of people?",
+      "answerable": true,
+      "gold": [
+        "ai_act:art5"
+      ],
+      "status": "answered",
+      "refusal_code": null,
+      "cited": [
+        "ai_act:art5"
+      ],
+      "retrieved_articles": [
+        "ai_act:art5",
+        "ai_act:anxIII",
+        "ai_act:art26",
+        "ai_act:art2",
+        "ai_act:art7",
+        "ai_act:art3"
+      ],
+      "precision": 1.0,
+      "claims_total": 1,
+      "claims_supported": 1,
+      "unsupported": []
+    },
+    {
+      "id": "a34",
+      "split": "test",
+      "category": "ai_act",
+      "question": "What information must the instructions for use of a high-risk AI system include?",
+      "answerable": true,
+      "gold": [
+        "ai_act:art13"
+      ],
+      "status": "answered",
+      "refusal_code": null,
+      "cited": [
+        "ai_act:art13"
+      ],
+      "retrieved_articles": [
+        "ai_act:art13",
+        "ai_act:anxVIII",
+        "ai_act:art26",
+        "ai_act:art3",
+        "ai_act:art15",
+        "ai_act:anxIV"
+      ],
+      "precision": 1.0,
+      "claims_total": 2,
+      "claims_supported": 2,
+      "unsupported": []
+    },
+    {
+      "id": "u02",
+      "split": "test",
+      "category": "out_of_scope",
+      "question": "Who won the 2022 football World Cup?",
+      "answerable": false,
+      "gold": [],
+      "status": "refused",
+      "refusal_code": "no_evidence",
+      "cited": [],
+      "retrieved_articles": [
+        "ai_act:art2",
+        "gdpr:art9",
+        "ai_act:art3",
+        "gdpr:art99",
+        "ai_act:art60",
+        "gdpr:art49"
+      ],
+      "precision": null,
+      "claims_total": 0,
+      "claims_supported": 0,
+      "unsupported": []
+    },
+    {
+      "id": "u04",
+      "split": "test",
+      "category": "out_of_scope",
+      "question": "What is the speed limit on Dutch motorways?",
+      "answerable": false,
+      "gold": [],
+      "status": "refused",
+      "refusal_code": "no_evidence",
+      "cited": [],
+      "retrieved_articles": [
+        "gdpr:art5",
+        "gdpr:art49",
+        "gdpr:art47",
+        "gdpr:art6",
+        "gdpr:art83"
+      ],
+      "precision": null,
+      "claims_total": 0,
+      "claims_supported": 0,
+      "unsupported": []
+    },
+    {
+      "id": "u06",
+      "split": "test",
+      "category": "out_of_scope",
+      "question": "How many weeks of paid parental leave does an employee get in Germany?",
+      "answerable": false,
+      "gold": [],
+      "status": "refused",
+      "refusal_code": "no_evidence",
+      "cited": [],
+      "retrieved_articles": [
+        "gdpr:art88",
+        "ai_act:art2",
+        "ai_act:art26",
+        "ai_act:anxIII",
+        "gdpr:art8",
+        "gdpr:art9"
+      ],
+      "precision": null,
+      "claims_total": 0,
+      "claims_supported": 0,
+      "unsupported": []
+    },
+    {
+      "id": "u08",
+      "split": "test",
+      "category": "out_of_scope",
+      "question": "What is the GDPR's rule on the minimum wage?",
+      "answerable": false,
+      "gold": [],
+      "status": "refused",
+      "refusal_code": "no_evidence",
+      "cited": [],
+      "retrieved_articles": [
+        "gdpr:art1",
+        "gdpr:art47",
+        "gdpr:art88",
+        "gdpr:art84",
+        "gdpr:art99"
+      ],
+      "precision": null,
+      "claims_total": 0,
+      "claims_supported": 0,
+      "unsupported": []
+    },
+    {
+      "id": "u10",
+      "split": "test",
+      "category": "out_of_scope",
+      "question": "What is the boiling point of water at sea level?",
+      "answerable": false,
+      "gold": [],
+      "status": "refused",
+      "refusal_code": "no_evidence",
+      "cited": [],
+      "retrieved_articles": [
+        "gdpr:art20",
+        "ai_act:anxIII",
+        "gdpr:art14",
+        "gdpr:art45",
+        "ai_act:anxXI",
+        "ai_act:art15",
+        "gdpr:art13"
+      ],
+      "precision": null,
+      "claims_total": 0,
+      "claims_supported": 0,
+      "unsupported": []
+    },
+    {
+      "id": "u12",
+      "split": "test",
+      "category": "out_of_scope",
+      "question": "What are the opening hours of the Dutch data protection authority?",
+      "answerable": false,
+      "gold": [],
+      "status": "refused",
+      "refusal_code": "no_evidence",
+      "cited": [],
+      "retrieved_articles": [
+        "gdpr:art33",
+        "gdpr:art57",
+        "gdpr:art39",
+        "gdpr:art37",
+        "gdpr:art38"
+      ],
+      "precision": null,
+      "claims_total": 0,
+      "claims_supported": 0,
+      "unsupported": []
+    },
+    {
+      "id": "u14",
+      "split": "test",
+      "category": "out_of_scope",
+      "question": "What is the penalty for drunk driving in Belgium?",
+      "answerable": false,
+      "gold": [],
+      "status": "refused",
+      "refusal_code": "no_evidence",
+      "cited": [],
+      "retrieved_articles": [
+        "ai_act:art99",
+        "gdpr:art84",
+        "gdpr:art83",
+        "ai_act:art100"
+      ],
+      "precision": null,
+      "claims_total": 0,
+      "claims_supported": 0,
+      "unsupported": []
+    },
+    {
+      "id": "u16",
+      "split": "test",
+      "category": "out_of_scope",
+      "question": "What does the AI Act say about the fuel efficiency of self-driving tractors?",
+      "answerable": false,
+      "gold": [],
+      "status": "refused",
+      "refusal_code": "no_evidence",
+      "cited": [],
+      "retrieved_articles": [
+        "ai_act:art95",
+        "ai_act:anxI",
+        "ai_act:art53",
+        "ai_act:art3",
+        "ai_act:art5",
+        "ai_act:art59",
+        "ai_act:art7"
+      ],
+      "precision": null,
+      "claims_total": 0,
+      "claims_supported": 0,
+      "unsupported": []
+    },
+    {
+      "id": "u18",
+      "split": "test",
+      "category": "out_of_scope",
+      "question": "What interest rate does the European Central Bank charge?",
+      "answerable": false,
+      "gold": [],
+      "status": "refused",
+      "refusal_code": "model_declined",
+      "cited": [],
+      "retrieved_articles": [
+        "ai_act:art74",
+        "gdpr:art15",
+        "gdpr:art12",
+        "gdpr:art6",
+        "gdpr:art70",
+        "gdpr:art57",
+        "gdpr:art61"
+      ],
+      "precision": null,
+      "claims_total": 0,
+      "claims_supported": 0,
+      "unsupported": []
+    },
+    {
+      "id": "u20",
+      "split": "test",
+      "category": "out_of_scope",
+      "question": "How long is a patent valid in the EU?",
+      "answerable": false,
+      "gold": [],
+      "status": "refused",
+      "refusal_code": "no_evidence",
+      "cited": [],
+      "retrieved_articles": [
+        "ai_act:art44",
+        "gdpr:art66",
+        "ai_act:art110",
+        "gdpr:art40",
+        "gdpr:art92",
+        "ai_act:art47",
+        "gdpr:art96",
+        "ai_act:art74"
+      ],
+      "precision": null,
+      "claims_total": 0,
+      "claims_supported": 0,
+      "unsupported": []
+    }
+  ],
+  "gate": {
+    "passed": true,
+    "failures": [],
+    "notes": [
+      "baseline was produced with another model/embedder/store: only the floors apply"
+    ]
+  }
+}

@@ -1,0 +1,71 @@
+# Offline by design: no API keys, no paid calls. The answer model is the deterministic mock,
+# so every score is reproducible and a drop is a real regression in retrieval, gating,
+# citation handling or the corpus.
+name: ci
+
+on:
+  push:
+    branches: [main]
+  pull_request:
+
+permissions:
+  contents: read
+
+concurrency:
+  group: ci-${{ github.ref }}
+  cancel-in-progress: true
+
+jobs:
+  checks:
+    runs-on: ubuntu-24.04
+    timeout-minutes: 15
+    services:
+      postgres:
+        image: pgvector/pgvector:pg17
+        env:
+          POSTGRES_USER: cited
+          POSTGRES_PASSWORD: cited  # throwaway CI database, not a secret
+          POSTGRES_DB: cited
+        ports: ["5432:5432"]
+        options: >-
+          --health-cmd "pg_isready -U cited"
+          --health-interval 5s
+          --health-timeout 5s
+          --health-retries 12
+    env:
+      CA_PROVIDER: mock
+      CA_EMBEDDER: hash
+      CA_STORE: memory
+      CA_TEST_DATABASE_URL: postgresql://cited:cited@localhost:5432/cited
+    steps:
+      - uses: actions/checkout@v4
+
+      - uses: astral-sh/setup-uv@v6
+        with:
+          python-version: "3.12"
+          enable-cache: true
+
+      - name: Install (locked)
+        run: uv sync --frozen --all-extras --group dev
+
+      - name: Lint
+        run: |
+          uv run ruff check src tests
+          uv run ruff format --check src tests
+
+      - name: Type check
+        run: uv run mypy
+
+      - name: Tests (including pgvector integration)
+        run: uv run pytest -rs
+
+      - name: Eval gate (fails the build when a score drops)
+        run: uv run cited-answers eval
+
+      - name: Keep the eval report
+        if: always()
+        uses: actions/upload-artifact@v4
+        with:
+          name: eval-report
+          path: evals/reports/
+          if-no-files-found: ignore

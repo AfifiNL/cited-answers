@@ -1,0 +1,87 @@
+{"id": "g01", "split": "dev", "category": "gdpr", "question": "Under what conditions can I ask a company to delete my personal data?", "answerable": true, "gold": ["gdpr:art17"]}
+{"id": "g02", "split": "test", "category": "gdpr", "question": "How quickly must a controller tell the supervisory authority about a personal data breach?", "answerable": true, "gold": ["gdpr:art33"]}
+{"id": "g03", "split": "dev", "category": "gdpr", "question": "What legal grounds make processing of personal data lawful?", "answerable": true, "gold": ["gdpr:art6"]}
+{"id": "g04", "split": "test", "category": "gdpr", "question": "What must a controller be able to demonstrate when processing is based on consent?", "answerable": true, "gold": ["gdpr:art7"]}
+{"id": "g05", "split": "dev", "category": "gdpr", "question": "When is a data protection impact assessment required?", "answerable": true, "gold": ["gdpr:art35"]}
+{"id": "g06", "split": "test", "category": "gdpr", "question": "In which cases must an organisation designate a data protection officer?", "answerable": true, "gold": ["gdpr:art37"]}
+{"id": "g07", "split": "dev", "category": "gdpr", "question": "What is the highest administrative fine under the GDPR?", "answerable": true, "gold": ["gdpr:art83"]}
+{"id": "g08", "split": "test", "category": "gdpr", "question": "Can I receive my personal data in a machine-readable format and move it to another service?", "answerable": true, "gold": ["gdpr:art20"]}
+{"id": "g09", "split": "dev", "category": "gdpr", "question": "What information must be given to a person when their data are collected from them?", "answerable": true, "gold": ["gdpr:art13"]}
+{"id": "g10", "split": "test", "category": "gdpr", "question": "Is processing of health data or biometric data allowed?", "answerable": true, "gold": ["gdpr:art9"]}
+{"id": "g11", "split": "dev", "category": "gdpr", "question": "What can a data subject obtain from the controller under the right of access?", "answerable": true, "gold": ["gdpr:art15"]}
+{"id": "g12", "split": "test", "category": "gdpr", "question": "Do I have the right not to be subject to a decision based solely on automated processing?", "answerable": true, "gold": ["gdpr:art22"]}
+{"id": "g13", "split": "dev", "category": "gdpr", "question": "What do the principles of data minimisation and storage limitation require?", "answerable": true, "gold": ["gdpr:art5"]}
+{"id": "g14", "split": "test", "category": "gdpr", "question": "What must a contract between a controller and a processor contain?", "answerable": true, "gold": ["gdpr:art28"]}
+{"id": "g15", "split": "dev", "category": "gdpr", "question": "Which records of processing activities must a controller keep?", "answerable": true, "gold": ["gdpr:art30"]}
+{"id": "g16", "split": "test", "category": "gdpr", "question": "When may personal data be transferred to a third country on the basis of an adequacy decision?", "answerable": true, "gold": ["gdpr:art45"]}
+{"id": "g17", "split": "dev", "category": "gdpr", "question": "What does data protection by design and by default mean for controllers?", "answerable": true, "gold": ["gdpr:art25"]}
+{"id": "g18", "split": "test", "category": "gdpr", "question": "When must the data subjects themselves be informed of a personal data breach?", "answerable": true, "gold": ["gdpr:art34"]}
+{"id": "g19", "split": "dev", "category": "gdpr", "question": "From what age can a child consent to information society services?", "answerable": true, "gold": ["gdpr:art8"]}
+{"id": "g20", "split": "test", "category": "gdpr", "question": "When can a data subject object to processing for direct marketing?", "answerable": true, "gold": ["gdpr:art21"]}
+{"id": "g21", "split": "dev", "category": "gdpr", "question": "What security measures does the GDPR require, such as pseudonymisation and encryption?", "answerable": true, "gold": ["gdpr:art32"]}
+{"id": "g22", "split": "test", "category": "gdpr", "question": "How does the GDPR define personal data?", "answerable": true, "gold": ["gdpr:art4"]}
+{"id": "g23", "split": "dev", "category": "gdpr", "question": "Can a data subject claim compensation for damage caused by an infringement of the GDPR?", "answerable": true, "gold": ["gdpr:art82"]}
+{"id": "g24", "split": "test", "category": "gdpr", "question": "When does a data subject have the right to restriction of processing?", "answerable": true, "gold": ["gdpr:art18"]}
+{"id": "g25", "split": "dev", "category": "gdpr", "question": "Does the GDPR apply to a company outside the EU that offers goods to people in the EU?", "answerable": true, "gold": ["gdpr:art3"]}
+{"id": "g26", "split": "test", "category": "gdpr", "question": "Where can a data subject lodge a complaint if they think processing of their personal data infringes the GDPR?", "answerable": true, "gold": ["gdpr:art77"]}
+{"id": "g27", "split": "dev", "category": "gdpr", "question": "What are binding corporate rules and what must they specify?", "answerable": true, "gold": ["gdpr:art47"]}
+{"id": "g28", "split": "test", "category": "gdpr", "question": "What tasks does a data protection officer have?", "answerable": true, "gold": ["gdpr:art39"]}
+{"id": "g29", "split": "dev", "category": "gdpr", "question": "Does the GDPR apply to purely personal or household activities?", "answerable": true, "gold": ["gdpr:art2"]}
+{"id": "g30", "split": "test", "category": "gdpr", "question": "What is GDPR Article 12 about?", "answerable": true, "gold": ["gdpr:art12"]}
+{"id": "g31", "split": "dev", "category": "gdpr", "question": "What must a controller do when a data protection impact assessment shows a high risk that it cannot mitigate?", "answerable": true, "gold": ["gdpr:art36"]}
+{"id": "g32", "split": "test", "category": "gdpr", "question": "What may a processor not do without the prior written authorisation of the controller?", "answerable": true, "gold": ["gdpr:art28"]}
+{"id": "a01", "split": "dev", "category": "ai_act", "question": "Which AI practices are banned under the AI Act?", "answerable": true, "gold": ["ai_act:art5"]}
+{"id": "a02", "split": "test", "category": "ai_act", "question": "Must people be told when they are interacting with an AI system such as a chatbot?", "answerable": true, "gold": ["ai_act:art50"]}
+{"id": "a03", "split": "dev", "category": "ai_act", "question": "What must providers and deployers do about the AI literacy of their staff?", "answerable": true, "gold": ["ai_act:art4"]}
+{"id": "a04", "split": "test", "category": "ai_act", "question": "When is an AI system considered high-risk?", "answerable": true, "gold": ["ai_act:art6", "ai_act:anxIII"]}
+{"id": "a05", "split": "dev", "category": "ai_act", "question": "What obligations do deployers of high-risk AI systems have?", "answerable": true, "gold": ["ai_act:art26"]}
+{"id": "a06", "split": "test", "category": "ai_act", "question": "Which deployers must carry out a fundamental rights impact assessment?", "answerable": true, "gold": ["ai_act:art27"]}
+{"id": "a07", "split": "dev", "category": "ai_act", "question": "What human oversight measures must high-risk AI systems allow?", "answerable": true, "gold": ["ai_act:art14"]}
+{"id": "a08", "split": "test", "category": "ai_act", "question": "What does the risk management system for high-risk AI systems involve?", "answerable": true, "gold": ["ai_act:art9"]}
+{"id": "a09", "split": "dev", "category": "ai_act", "question": "What quality criteria apply to training, validation and testing data sets?", "answerable": true, "gold": ["ai_act:art10"]}
+{"id": "a10", "split": "test", "category": "ai_act", "question": "What must the technical documentation of a high-risk AI system contain?", "answerable": true, "gold": ["ai_act:art11", "ai_act:anxIV"]}
+{"id": "a11", "split": "dev", "category": "ai_act", "question": "Must high-risk AI systems automatically record events in logs?", "answerable": true, "gold": ["ai_act:art12", "ai_act:art19", "ai_act:art26"]}
+{"id": "a12", "split": "test", "category": "ai_act", "question": "What are the requirements on accuracy, robustness and cybersecurity?", "answerable": true, "gold": ["ai_act:art15"]}
+{"id": "a13", "split": "dev", "category": "ai_act", "question": "What obligations do providers of general-purpose AI models have?", "answerable": true, "gold": ["ai_act:art53", "ai_act:art55"]}
+{"id": "a14", "split": "test", "category": "ai_act", "question": "When is a general-purpose AI model classified as having systemic risk?", "answerable": true, "gold": ["ai_act:art51", "ai_act:anxXIII"]}
+{"id": "a15", "split": "dev", "category": "ai_act", "question": "What penalties apply for non-compliance with the prohibited AI practices?", "answerable": true, "gold": ["ai_act:art99"]}
+{"id": "a16", "split": "test", "category": "ai_act", "question": "When does the AI Act enter into force and from when does it apply?", "answerable": true, "gold": ["ai_act:art113"]}
+{"id": "a17", "split": "dev", "category": "ai_act", "question": "How does the AI Act define an AI system?", "answerable": true, "gold": ["ai_act:art3"]}
+{"id": "a18", "split": "test", "category": "ai_act", "question": "What are AI regulatory sandboxes?", "answerable": true, "gold": ["ai_act:art57", "ai_act:art58"]}
+{"id": "a19", "split": "dev", "category": "ai_act", "question": "How must providers report serious incidents?", "answerable": true, "gold": ["ai_act:art73"]}
+{"id": "a20", "split": "test", "category": "ai_act", "question": "What must a quality management system for high-risk AI systems cover?", "answerable": true, "gold": ["ai_act:art17"]}
+{"id": "a21", "split": "dev", "category": "ai_act", "question": "Which high-risk AI systems must be registered in the EU database before being placed on the market?", "answerable": true, "gold": ["ai_act:art49", "ai_act:art71"]}
+{"id": "a22", "split": "test", "category": "ai_act", "question": "Does a person affected by a decision based on a high-risk AI system have a right to an explanation?", "answerable": true, "gold": ["ai_act:art86"]}
+{"id": "a23", "split": "dev", "category": "ai_act", "question": "Which conformity assessment procedure applies to high-risk AI systems?", "answerable": true, "gold": ["ai_act:art43", "ai_act:anxVI", "ai_act:anxVII"]}
+{"id": "a24", "split": "test", "category": "ai_act", "question": "Does the AI Act apply to AI systems used exclusively for military purposes?", "answerable": true, "gold": ["ai_act:art2"]}
+{"id": "a25", "split": "dev", "category": "ai_act", "question": "What must providers do for post-market monitoring?", "answerable": true, "gold": ["ai_act:art72"]}
+{"id": "a26", "split": "test", "category": "ai_act", "question": "Are AI systems used for recruitment or to filter job applications high-risk?", "answerable": true, "gold": ["ai_act:anxIII", "ai_act:art6"]}
+{"id": "a27", "split": "dev", "category": "ai_act", "question": "What fines can the Commission impose on providers of general-purpose AI models?", "answerable": true, "gold": ["ai_act:art101"]}
+{"id": "a28", "split": "test", "category": "ai_act", "question": "What must deployers disclose about deep fakes?", "answerable": true, "gold": ["ai_act:art50"]}
+{"id": "a29", "split": "dev", "category": "ai_act", "question": "What does Article 14 of the AI Act say?", "answerable": true, "gold": ["ai_act:art14"]}
+{"id": "a30", "split": "test", "category": "ai_act", "question": "What are the obligations of importers of high-risk AI systems?", "answerable": true, "gold": ["ai_act:art23"]}
+{"id": "a31", "split": "dev", "category": "ai_act", "question": "Is emotion recognition in the workplace allowed?", "answerable": true, "gold": ["ai_act:art5"]}
+{"id": "a32", "split": "test", "category": "ai_act", "question": "Can AI be used for social scoring of people?", "answerable": true, "gold": ["ai_act:art5"]}
+{"id": "a33", "split": "dev", "category": "ai_act", "question": "What does Annex III list?", "answerable": true, "gold": ["ai_act:anxIII"]}
+{"id": "a34", "split": "test", "category": "ai_act", "question": "What information must the instructions for use of a high-risk AI system include?", "answerable": true, "gold": ["ai_act:art13"]}
+{"id": "a35", "split": "dev", "category": "ai_act", "question": "Does the AI Act affect the application of the GDPR to personal data?", "answerable": true, "gold": ["ai_act:art2"]}
+{"id": "u01", "split": "dev", "category": "out_of_scope", "question": "What is the corporate tax rate in the Netherlands?", "answerable": false, "gold": []}
+{"id": "u02", "split": "test", "category": "out_of_scope", "question": "Who won the 2022 football World Cup?", "answerable": false, "gold": []}
+{"id": "u03", "split": "dev", "category": "out_of_scope", "question": "How do I bake sourdough bread?", "answerable": false, "gold": []}
+{"id": "u04", "split": "test", "category": "out_of_scope", "question": "What is the speed limit on Dutch motorways?", "answerable": false, "gold": []}
+{"id": "u05", "split": "dev", "category": "out_of_scope", "question": "What fines does the Digital Markets Act set for gatekeepers?", "answerable": false, "gold": []}
+{"id": "u06", "split": "test", "category": "out_of_scope", "question": "How many weeks of paid parental leave does an employee get in Germany?", "answerable": false, "gold": []}
+{"id": "u07", "split": "dev", "category": "out_of_scope", "question": "What does the AI Act say about cryptocurrency mining?", "answerable": false, "gold": []}
+{"id": "u08", "split": "test", "category": "out_of_scope", "question": "What is the GDPR's rule on the minimum wage?", "answerable": false, "gold": []}
+{"id": "u09", "split": "dev", "category": "out_of_scope", "question": "Which programming language should I use to build a chatbot?", "answerable": false, "gold": []}
+{"id": "u10", "split": "test", "category": "out_of_scope", "question": "What is the boiling point of water at sea level?", "answerable": false, "gold": []}
+{"id": "u11", "split": "dev", "category": "out_of_scope", "question": "How much does a trademark registration cost at the EUIPO?", "answerable": false, "gold": []}
+{"id": "u12", "split": "test", "category": "out_of_scope", "question": "What are the opening hours of the Dutch data protection authority?", "answerable": false, "gold": []}
+{"id": "u13", "split": "dev", "category": "out_of_scope", "question": "Can my landlord increase the rent by 10% this year?", "answerable": false, "gold": []}
+{"id": "u14", "split": "test", "category": "out_of_scope", "question": "What is the penalty for drunk driving in Belgium?", "answerable": false, "gold": []}
+{"id": "u15", "split": "dev", "category": "out_of_scope", "question": "Who is the current president of the European Commission?", "answerable": false, "gold": []}
+{"id": "u16", "split": "test", "category": "out_of_scope", "question": "What does the AI Act say about the fuel efficiency of self-driving tractors?", "answerable": false, "gold": []}
+{"id": "u17", "split": "dev", "category": "out_of_scope", "question": "How do I reset my password?", "answerable": false, "gold": []}
+{"id": "u18", "split": "test", "category": "out_of_scope", "question": "What interest rate does the European Central Bank charge?", "answerable": false, "gold": []}
+{"id": "u19", "split": "dev", "category": "out_of_scope", "question": "What does the GDPR say about the colour of company logos?", "answerable": false, "gold": []}
+{"id": "u20", "split": "test", "category": "out_of_scope", "question": "How long is a patent valid in the EU?", "answerable": false, "gold": []}

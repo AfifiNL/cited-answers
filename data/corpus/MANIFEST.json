@@ -1,0 +1,32 @@
+{
+  "corpus_version": "cbd4f9deaa0bc9cd",
+  "documents": [
+    {
+      "law": "gdpr",
+      "title": "Regulation (EU) 2016/679 (General Data Protection Regulation)",
+      "celex": "32016R0679",
+      "eli": "http://data.europa.eu/eli/reg/2016/679/oj",
+      "official_journal": "OJ L 119, 4.5.2016, p. 1",
+      "source_url": "https://eur-lex.europa.eu/legal-content/EN/TXT/HTML/?uri=CELEX:32016R0679",
+      "retrieved_at": "2026-11-08T16:24:53Z",
+      "raw_sha256": "ec79902acd1c853751c8dff1a7bb74e146b20ba9ac62137c97472670b0ea6ec2",
+      "articles": 99,
+      "annexes": 0,
+      "chunks": 511
+    },
+    {
+      "law": "ai_act",
+      "title": "Regulation (EU) 2024/1689 (Artificial Intelligence Act)",
+      "celex": "32024R1689",
+      "eli": "http://data.europa.eu/eli/reg/2024/1689/oj",
+      "official_journal": "OJ L, 2024/1689, 12.7.2024",
+      "source_url": "https://eur-lex.europa.eu/legal-content/EN/TXT/HTML/?uri=CELEX:32024R1689",
+      "retrieved_at": "2026-11-08T16:24:57Z",
+      "raw_sha256": "edb42bea61f1834b1a296ce489c513c1f022a386338c71aa4f7381acd6683911",
+      "articles": 113,
+      "annexes": 13,
+      "chunks": 817
+    }
+  ],
+  "notice": "Text: \u00a9 European Union, https://eur-lex.europa.eu. Reuse is authorised under Commission Decision 2011/833/EU. Only the Official Journal version is authentic."
+}
