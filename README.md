@@ -389,7 +389,12 @@ docs/DESIGN.md   design decisions, calibration, experiments that were rejected
   mentions; a fresh, independently written question set (round 2 saw `test` results); judge
   validation on subtle paraphrases, labelled by a lawyer.
 
+## Author
+
+Hossam Afifi ([github.com/AfifiNL](https://github.com/AfifiNL))
+
 ## License
 
-Code: [Apache-2.0](LICENSE). Legal texts: © European Union, reused under Commission Decision
-2011/833/EU (see [data/SOURCES.md](data/SOURCES.md)).
+Code: Copyright 2026 Hossam Afifi, licensed under [Apache-2.0](LICENSE). Legal texts:
+© European Union, reused under Commission Decision 2011/833/EU (see
+[data/SOURCES.md](data/SOURCES.md)).

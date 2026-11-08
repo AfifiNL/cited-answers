@@ -6,7 +6,7 @@ readme = "README.md"
 requires-python = ">=3.11"
 license = "Apache-2.0"
 license-files = ["LICENSE"]
-# Author metadata is left out until the owner decides it.
+authors = [{ name = "Hossam Afifi" }]
 dependencies = [
     "fastapi>=0.115",
     "uvicorn>=0.30",
@@ -17,6 +17,9 @@ dependencies = [
     "psycopg[binary]>=3.2",
     "snowballstemmer>=2.2",
 ]
+
+[project.urls]
+Repository = "https://github.com/AfifiNL/cited-answers"
 
 [project.optional-dependencies]
 openai = ["openai>=1.40"]
