@@ -137,4 +137,4 @@ def test_sources_shown_to_the_model_are_labelled_and_capped(
     make(corpus, store, settings, model).answer(BREACH_Q)
     labels = [s.label for s in model.calls[0].sources]
     assert labels == [f"S{i}" for i in range(1, len(labels) + 1)]
-    assert len(labels) <= settings.max_sources
+    assert len(labels) <= settings.max_sources + settings.max_linked_sources

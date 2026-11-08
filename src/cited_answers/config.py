@@ -17,7 +17,7 @@ class Settings(BaseSettings):
     )
 
     # Which implementations to use. "mock" and "hash" never touch the network.
-    provider: Literal["mock", "openai", "gemini"] = "mock"
+    provider: Literal["mock", "openai", "gemini", "replay"] = "mock"
     embedder: Literal["hash", "openai", "gemini"] = "hash"
     store: Literal["memory", "pgvector"] = "memory"
     database_url: str | None = None
@@ -36,10 +36,25 @@ class Settings(BaseSettings):
     gemini_thinking_level: Literal["minimal", "low", "medium", "high"] | None = None
     request_timeout_s: float = 60.0
 
+    # Faithfulness scoring in evals: "quote" (deterministic) or "judge" (quote check + LLM judge).
+    faithfulness_scorer: Literal["quote", "judge"] = "quote"
+    judge_provider: Literal["openai", "gemini", "replay"] = "gemini"
+    judge_model: str | None = None  # unset: the provider's answer model
+    judge_location: str | None = None  # Vertex location for the judge; unset: gemini_location
+    judge_thinking_level: Literal["minimal", "low", "medium", "high"] | None = None
+
+    # Record/replay (providers/replay.py). Replay reads `cassette`; a live run with
+    # `record_cassette` set stores every model and judge call there.
+    cassette: Path | None = None
+    record_cassette: Path | None = None
+
     # Retrieval
     top_k: int = Field(default=8, ge=1, le=50)
     per_article_cap: int = Field(default=3, ge=1)
     max_sources: int = Field(default=6, ge=1, le=20)
+    # Same-article context added to the sources (pipeline/linking.py): lead paragraphs and
+    # exceptions to the paragraphs shown.
+    max_linked_sources: int = Field(default=3, ge=0, le=6)
 
     # Gates (calibrated offline on the dev split; recalibrate for a semantic embedder)
     min_evidence_coverage: float = Field(default=0.45, ge=0.0, le=1.0)

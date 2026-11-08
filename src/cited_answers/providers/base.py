@@ -3,6 +3,8 @@
 The pipeline only talks to two small protocols:
   * Embedder       turns text into unit vectors of a fixed dimension;
   * AnswerModel    turns a question plus numbered sources into a structured Draft.
+The evals add a third:
+  * JudgeModel     decides whether one claim says what the provision it cites says.
 
 A Draft is a list of claims. Each claim names exactly one source label (S1, S2, ...) and
 carries a verbatim quote from that source. The model never writes citations as free text,
@@ -13,7 +15,7 @@ from __future__ import annotations
 
 from collections.abc import Sequence
 from dataclasses import dataclass
-from typing import Protocol, runtime_checkable
+from typing import Literal, Protocol, runtime_checkable
 
 from pydantic import BaseModel, Field
 
@@ -65,6 +67,29 @@ class AnswerModel(Protocol):
     name: str
 
     def draft(self, request: DraftRequest) -> Draft: ...
+
+
+@dataclass(frozen=True)
+class JudgeRequest:
+    claim: str
+    quote: str  # the quote the answer gave as support
+    citation: str  # "GDPR Article 17(1)"
+    provision: str  # full text of the cited article
+
+
+class Judgement(BaseModel):
+    # The reason comes first so that a model writes its reasoning before the verdict.
+    reason: str = Field(
+        description="One or two sentences on what the provision does or does not back."
+    )
+    verdict: Literal["supported", "partially_supported", "not_supported"]
+
+
+@runtime_checkable
+class JudgeModel(Protocol):
+    name: str
+
+    def judge(self, request: JudgeRequest) -> Judgement: ...
 
 
 class ProviderError(RuntimeError):

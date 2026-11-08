@@ -1,0 +1,64 @@
+{
+  "scorer": "judge:gemini:gemini-3.1-pro-preview",
+  "cases": 93,
+  "judge_errors": 0,
+  "quote_only": {
+    "accuracy": 0.4731,
+    "catch_rate": 0.0755,
+    "false_alarm_rate": 0.0
+  },
+  "with_judge": {
+    "accuracy": 1.0,
+    "catch_rate": 1.0,
+    "false_alarm_rate": 0.0
+  },
+  "by_kind": {
+    "verbatim": {
+      "cases": 20,
+      "expected": "supported",
+      "quote_passes": 20,
+      "judge_passes": 20,
+      "judge_errors": 0
+    },
+    "shall_to_must": {
+      "cases": 20,
+      "expected": "supported",
+      "quote_passes": 20,
+      "judge_passes": 20,
+      "judge_errors": 0
+    },
+    "shall_to_may": {
+      "cases": 20,
+      "expected": "not supported",
+      "quote_passes": 20,
+      "judge_passes": 0,
+      "judge_errors": 0
+    },
+    "negation": {
+      "cases": 20,
+      "expected": "not supported",
+      "quote_passes": 20,
+      "judge_passes": 0,
+      "judge_errors": 0
+    },
+    "number_change": {
+      "cases": 5,
+      "expected": "not supported",
+      "quote_passes": 1,
+      "judge_passes": 0,
+      "judge_errors": 0
+    },
+    "actor_swap": {
+      "cases": 8,
+      "expected": "not supported",
+      "quote_passes": 8,
+      "judge_passes": 0,
+      "judge_errors": 0
+    }
+  },
+  "judge_mistakes": [],
+  "gate": {
+    "passed": true,
+    "failures": []
+  }
+}

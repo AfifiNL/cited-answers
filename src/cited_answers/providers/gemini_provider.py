@@ -15,12 +15,25 @@ from __future__ import annotations
 
 import math
 from collections.abc import Sequence
-from typing import Any
+from typing import Any, TypeVar
 
-from pydantic import ValidationError
+from pydantic import BaseModel, ValidationError
 
-from cited_answers.providers.base import Draft, DraftRequest, ProviderError
-from cited_answers.providers.prompts import SYSTEM_PROMPT, build_user_prompt
+from cited_answers.providers.base import (
+    Draft,
+    DraftRequest,
+    Judgement,
+    JudgeRequest,
+    ProviderError,
+)
+from cited_answers.providers.prompts import (
+    JUDGE_SYSTEM_PROMPT,
+    SYSTEM_PROMPT,
+    build_judge_prompt,
+    build_user_prompt,
+)
+
+T = TypeVar("T", bound=BaseModel)
 
 # Rate limits and transient server errors are retried with exponential backoff by the SDK.
 RETRY_STATUS = (408, 429, 500, 502, 503, 504)
@@ -34,7 +47,9 @@ def _client(client: Any, vertex: bool, location: str | None, timeout_s: float) -
 
     http = types.HttpOptions(
         timeout=int(timeout_s * 1000),
-        retry_options=types.HttpRetryOptions(attempts=4, http_status_codes=list(RETRY_STATUS)),
+        retry_options=types.HttpRetryOptions(
+            attempts=8, initial_delay=2.0, max_delay=60.0, http_status_codes=list(RETRY_STATUS)
+        ),
     )
     if vertex:
         return genai.Client(vertexai=True, location=location or None, http_options=http)
@@ -46,7 +61,9 @@ def _describe(exc: Exception) -> str:
     return f"{type(exc).__name__}" + (f" (HTTP {code})" if code else "")
 
 
-class GeminiAnswerModel:
+class _GeminiStructured:
+    """Shared by the answer model and the judge: one structured (JSON-schema) call."""
+
     def __init__(
         self,
         model: str,
@@ -68,13 +85,13 @@ class GeminiAnswerModel:
         self.thinking_level = thinking_level.upper() if thinking_level else None
         self._client = _client(client, vertex, location, timeout_s)
 
-    def draft(self, request: DraftRequest) -> Draft:
+    def _call(self, system: str, user: str, schema: type[T], what: str) -> T:
         from google.genai import types
 
         config = types.GenerateContentConfig(
-            system_instruction=SYSTEM_PROMPT,
+            system_instruction=system,
             response_mime_type="application/json",
-            response_schema=Draft,
+            response_schema=schema,
             temperature=self.temperature,
             thinking_config=(
                 types.ThinkingConfig(thinking_level=types.ThinkingLevel(self.thinking_level))
@@ -84,14 +101,24 @@ class GeminiAnswerModel:
         )
         try:
             resp = self._client.models.generate_content(
-                model=self.model, contents=build_user_prompt(request), config=config
+                model=self.model, contents=user, config=config
             )
         except Exception as exc:
             raise ProviderError(f"Gemini call failed: {_describe(exc)}") from None
         try:
-            return Draft.model_validate_json(resp.text or "")
+            return schema.model_validate_json(resp.text or "")
         except ValidationError:
-            raise ProviderError("Gemini output did not match the answer schema") from None
+            raise ProviderError(f"Gemini output did not match the {what} schema") from None
+
+
+class GeminiAnswerModel(_GeminiStructured):
+    def draft(self, request: DraftRequest) -> Draft:
+        return self._call(SYSTEM_PROMPT, build_user_prompt(request), Draft, "answer")
+
+
+class GeminiJudgeModel(_GeminiStructured):
+    def judge(self, request: JudgeRequest) -> Judgement:
+        return self._call(JUDGE_SYSTEM_PROMPT, build_judge_prompt(request), Judgement, "judge")
 
 
 class GeminiEmbedder:

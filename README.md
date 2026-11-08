@@ -9,9 +9,11 @@ texts do not support an answer, the service refuses instead of guessing.
   deterministic **mock** model so tests, evals and CI run offline and cost nothing.
 - An **eval suite** (faithfulness, citation precision, refusal correctness) that **fails CI**
   when a score drops.
-- A **live run** with Gemini on Vertex AI: on the held-out split, 80 of 80 claims verified
-  against the cited article, no answer to an out-of-scope question, citation precision 0.95
-  ([details](#live-run-gemini-on-vertex-ai-2026-11-08)).
+- An **LLM judge** behind the same metric interface, tested on its own generated set, and a
+  **recorded live run** that CI replays offline, so model behaviour is gated at zero cost.
+- **Live results** (Gemini on Vertex AI, all 87 questions): no answer to an out-of-scope
+  question, refusal accuracy 0.98, citation precision 0.94, judge-scored faithfulness 0.88
+  ([details](#live-run-round-2-final-code-2026-11-08)).
 
 > Not legal advice. The corpus is a snapshot of the texts as published in the Official Journal
 > and does not include later corrigenda or amendments. Only the Official Journal is authentic.
@@ -48,8 +50,9 @@ Requires Python 3.11+ and [uv](https://docs.astral.sh/uv/).
 
 ```bash
 make install          # .venv with all extras and dev tools
-make test             # 111 tests; pgvector tests run when a database is available
+make test             # 157 tests; pgvector tests run when a database is available
 make eval             # offline eval gate (mock model): prints scores, exits 1 on a regression
+make eval-replay      # replay of a recorded live run (model + LLM judge), still offline and free
 make serve            # API on http://127.0.0.1:8000, OpenAPI docs at /docs
 ```
 
@@ -89,7 +92,8 @@ Refusal codes: `no_evidence` (the texts do not cover the question), `model_decli
 question
    │
    ▼
-retrieve ──► explicit references ("Article 17 GDPR", "Annex III") are pinned first;
+retrieve ──► explicit references ("Article 17 GDPR", "Annex III") are pinned first, and so is
+   │         the defining point when a question asks for a definition ("define X");
    │         a question naming one law searches only that law;
    │         lay words are expanded with the texts' own wording ("delete" → "erase");
    │         hybrid search: BM25 + dense vectors, fused with Reciprocal Rank Fusion;
@@ -124,6 +128,12 @@ Techniques, and why:
   topic can still be found by that topic.
 - **Hybrid retrieval with RRF.** Lexical and vector rankings are fused by rank, so no score
   calibration between them is needed. The same fusion code serves both stores.
+- **Definition lookup.** "How does the GDPR define personal data?" pins GDPR Article 4, point
+  (1). The definitions articles have 26 and 68 points that share most of their words, so ranked
+  retrieval kept picking the wrong ones. A term only counts when it sits where a definition
+  question puts it ("define X", "what does X mean", "What is X?") and matches a defined term as
+  a whole phrase, so "high-risk AI systems" does not pull in the definition of 'AI system'.
+  Tested against all 95 definitions in both texts, not against the eval questions.
 - **Two deterministic gates around one model call.** The evidence gate stops out-of-scope
   questions before any tokens are spent. The citation verifier stops unsupported claims after
   generation. A failed check is fed back to the model once; a second failure is a refusal, never
@@ -145,7 +155,7 @@ before any tuning, all tuning used `dev` only, and `test` was run once at the en
 
 | metric | definition |
 |---|---|
-| faithfulness | share of claims whose quote is verbatim in the **cited article** (looked up independently of the pipeline), whose numbers all appear in that quote, and which share at least half their words with it |
+| faithfulness | share of claims whose quote is verbatim in the **cited article** (looked up independently of the pipeline), whose numbers all appear in that quote, and which share at least half their words with it. With `CA_FAITHFULNESS_SCORER=judge`, an LLM judge must also find the claim fully supported by the article (below) |
 | citation precision | over answered, answerable questions: share of cited articles that are gold articles |
 | refusal accuracy | share of questions where the system answered an answerable one or refused an unanswerable one |
 | unsafe answer rate | share of unanswerable questions that were answered (the costly error) |
@@ -155,9 +165,9 @@ Current offline scores (mock model, hashing embedder, in-memory store):
 
 | scope | items | faithfulness | citation precision | refusal accuracy | unsafe answers | false refusals | retrieval recall |
 |---|---|---|---|---|---|---|---|
-| all | 87 | 1.000 | 0.895 | 0.989 | 0.050 | 0.000 | 0.970 |
+| all | 87 | 1.000 | 0.881 | 0.989 | 0.050 | 0.000 | 0.970 |
 | dev | 44 | 1.000 | 0.853 | 1.000 | 0.000 | 0.000 | 0.941 |
-| test | 43 | 1.000 | 0.939 | 0.977 | 0.100 | 0.000 | 1.000 |
+| test | 43 | 1.000 | 0.909 | 0.977 | 0.100 | 0.000 | 1.000 |
 
 The **gate** (`evals/gate.json`) fails the build when, in any scope, faithfulness < 0.98, citation
 precision < 0.75, refusal accuracy < 0.90 or unsafe answer rate > 0.10, **or** when any of these
@@ -183,7 +193,7 @@ Known offline failures, all visible in `evals/reports/latest.md`:
   (Art. 5(1)(f)); "legal grounds for processing" misses Art. 6 because the text never says
   "grounds". These are vocabulary gaps that a hashing embedder cannot bridge.
 
-### Live run (Gemini on Vertex AI, 2026-11-08)
+### Live run, round 1 (Gemini on Vertex AI, 2026-11-08)
 
 Same dataset, same metrics, same gate. Chat model `gemini-3.6-flash`, embeddings
 `gemini-embedding-001` (768 dimensions), both in EU locations. The configuration was chosen on
@@ -222,8 +232,7 @@ What changed with a live model:
   the model said so instead of quoting the amounts from memory. Both definition questions
   (*"How does the AI Act define an AI system?"*, *"How does the GDPR define personal data?"*)
   were declined because the definitions articles have dozens of points and the right one was not
-  among the three kept per article. That is a retrieval gap, and the next fix is a
-  definition lookup.
+  among the three kept per article. That was a retrieval gap; round 2 adds a definition lookup.
 - **Results vary between runs.** Temperature is left at the model default, so a borderline
   question can flip: one `dev` question was refused as unverified in one run and answered with
   four verified claims in a re-run. Each configuration was run once; treat differences of one
@@ -239,11 +248,87 @@ CA_GEMINI_LOCATION=eu CA_GEMINI_EMBEDDING_LOCATION=europe-west4 \
 uv run cited-answers eval --split dev --workers 6 --out evals/reports/live
 ```
 
+### Live run, round 2 (final code, 2026-11-08)
+
+All 87 questions with the code in this repository: definition lookup, same-article linking and
+the conditions rule (below), `gemini-3.6-flash` (thinking low) and `gemini-embedding-001`,
+faithfulness scored by the LLM judge.
+
+| scope | items | faithfulness (judge) | citation precision | refusal accuracy | unsafe answers | false refusals | retrieval recall |
+|---|---|---|---|---|---|---|---|
+| all | 87 | 0.884 | 0.939 | 0.977 | 0.000 | 0.030 | 1.000 |
+| dev | 44 | 0.827 | 0.938 | 0.955 | 0.000 | 0.059 | 1.000 |
+| test | 43 | 0.946 | 0.939 | 1.000 | 0.000 | 0.000 | 1.000 |
+
+- Both definition questions are now answered from the defining point and judged supported.
+- Two false refusals are left, both on `dev`: the GDPR's fine amounts (Art. 83(4)–(5) still not
+  retrieved) and one answer that failed verification twice.
+- One judge call failed on a rate limit. That claim counts as unsupported and the run was
+  marked as failed for it, as designed; faithfulness may be one claim higher.
+- Round 1's faithfulness of 1.000 used the quote check; these numbers use the judge, which is
+  stricter. They are not comparable.
+
+Reports: [`evals/live/2026-11-08/`](evals/live/2026-11-08/) (`round2-*`).
+
+### LLM judge
+
+The quote check proves that a quote is real and that the numbers match, but it cannot read.
+`CA_FAITHFULNESS_SCORER=judge` keeps it and adds an LLM judge behind the same
+`FaithfulnessScorer` interface (`evals/judge.py`). The judge gets the claim, its quote and the
+full cited article, and answers "supported", "partially supported" (a dropped condition or
+exception, "shall" turned into "may", the wrong actor) or "not supported". Only "supported"
+counts. It is a different, larger model than the one answering (`gemini-3.1-pro-preview` judging
+`gemini-3.6-flash`). A failed judge call is not a verdict: it fails the run.
+
+A judge needs its own test. `evals/judge_set.jsonl` is generated from the corpus: 20 obligation
+sentences, each edited in ways whose effect is known in advance (`cited-answers judge-eval`):
+
+| kind | expected | cases | quote check passes | judge passes |
+|---|---|---|---|---|
+| verbatim | supported | 20 | 20 | 20 |
+| "shall" -> "must" | supported | 20 | 20 | 20 |
+| "shall" -> "may" | not supported | 20 | 20 | **0** |
+| negation | not supported | 20 | 20 | **0** |
+| another actor | not supported | 8 | 8 | **0** |
+| changed number | not supported | 5 | 1 | 0 |
+
+The quote check catches 4 of the 53 meaning changes; with the judge, 53 of 53, with no false
+alarm on the 40 faithful claims. This shows sensitivity to clear distortions, not to subtle
+paraphrase.
+
+**What it found.** On a recorded live run, the judge rejected 26 of 131 claims that had all
+passed the quote check (faithfulness 0.80). Most stated a rule without an exception from another
+paragraph of the same article (the right to erasure without Art. 17(3)), or dropped a qualifier
+("where possible", "and" turned into "or"). Three general fixes, chosen from `dev` failures:
+exception paragraphs travel with the paragraph they limit, a paragraph 1 travels with the later
+paragraphs that qualify it (`pipeline/linking.py`), and the prompt asks to keep conditions and to
+give a sourced exception as its own claim. Judge-scored faithfulness rose to 0.87 (`dev` 0.82,
+`test` 0.93) and refusal accuracy to 0.95, with no unsafe answers. The 0.90 target is not met on
+`dev`; see [docs/DESIGN.md](docs/DESIGN.md) for what is left. In `evals/gate_judge.json` it is
+a tracked target: every run reports "target not met" and it may not regress, but it does not
+block. Citation precision, refusal accuracy and unsafe answers stay blocking floors.
+
+### Record and replay in CI
+
+A live run is recorded once into a cassette (`evals/fixtures/`): a hash of exactly what each
+model was sent, mapped to what it answered. `make eval-replay` replays the answers and the
+judge's verdicts with no network and no cost, and CI runs it on every push. It reproduces the
+recorded metrics exactly and is regression-checked against `evals/baseline_replay.json`.
+
+Replay is strict. If a change alters what the model would be sent (a prompt edit, retrieval
+returning other chunks), the request is not in the cassette and the gate fails with "re-record"
+instead of guessing. `make record-live` re-records; it reuses every stored answer to an
+unchanged request and pays only for the rest. A failed live call (a rate limit) is never
+stored as an answer; it fails the recording run, and running it again fills the gap. The cassettes are recorded with the offline hashing embedder, so replay needs no stored
+vectors; the semantic-embedding numbers are in the live-run tables.
+
 ## Configuration
 
-Environment variables (prefix `CA_`, see `.env.example`): `PROVIDER` (mock|openai|gemini),
+Environment variables (prefix `CA_`, see `.env.example`): `PROVIDER` (mock|openai|gemini|replay),
 `EMBEDDER` (hash|openai|gemini), `STORE` (memory|pgvector), `DATABASE_URL`, model ids, and the
-gate thresholds (`MIN_EVIDENCE_COVERAGE`, `MIN_CLAIM_SUPPORT`, ...). API keys are read by the
+gate thresholds (`MIN_EVIDENCE_COVERAGE`, `MIN_CLAIM_SUPPORT`, ...), the eval scorer
+(`FAITHFULNESS_SCORER`, `JUDGE_PROVIDER`, `JUDGE_MODEL`, `JUDGE_LOCATION`) and record/replay
+(`RECORD_CASSETTE`, `CASSETTE`). API keys are read by the
 vendor SDKs from their usual variables (`OPENAI_API_KEY`, `GEMINI_API_KEY`, or Vertex AI
 Application Default Credentials). The application never reads or logs them.
 
@@ -284,21 +369,25 @@ src/cited_answers/
   evals/         metrics (independent of the pipeline's own checks), runner and gate
   api/           FastAPI app
 data/            raw snapshots, parsed corpus, provenance
-evals/           dataset, gate thresholds, baseline, live-run reports (evals/live/)
+evals/           dataset, gates, baselines, recorded cassettes (fixtures/), judge test set,
+                 live-run reports (live/)
 docs/DESIGN.md   design decisions, calibration, experiments that were rejected
 ```
 
 ## Limitations and next steps
 
-- Live runs so far: Gemini on Vertex AI only. The OpenAI adapter is tested against a fake client,
-  not yet against the live API.
-- CI gates the offline configuration only. A live run is manual and costs money.
+- Live runs so far: Gemini on Vertex AI only. The OpenAI adapters (answer and judge) are tested
+  against fake clients, not yet against the live API.
+- CI gates the offline mock run and the replay of one recorded live run. A new live recording
+  is manual (`make record-live`) and costs money.
 - With semantic retrieval, the lexical evidence gate no longer separates `dev` cleanly (see
   [docs/DESIGN.md](docs/DESIGN.md)); the model-side refusal covers the gap.
+- Judge-scored faithfulness is below its 0.90 target on `dev`: the model still sometimes states a
+  rule without an exception or condition that the sources contain.
 - English only; corrigenda, amendments and recitals are not included.
-- Next: a definition lookup for "how does the Act define X" questions; record a live run into
-  replayable fixtures, so CI can also gate model behaviour at zero cost; an LLM-as-judge
-  faithfulness scorer behind the same metric interface.
+- Next: let the verifier flag a claim whose paragraph has a linked exception that no claim
+  mentions; a fresh, independently written question set (round 2 saw `test` results); judge
+  validation on subtle paraphrases, labelled by a lawyer.
 
 ## License
 

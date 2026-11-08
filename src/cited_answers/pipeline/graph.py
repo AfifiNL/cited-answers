@@ -28,7 +28,9 @@ from cited_answers.config import Settings
 from cited_answers.corpus import Corpus
 from cited_answers.glossary import expand_query
 from cited_answers.laws import LAW_KEYS
+from cited_answers.pipeline.definitions import DefinitionIndex
 from cited_answers.pipeline.evidence import EvidenceReport, assess_evidence
+from cited_answers.pipeline.linking import LinkIndex
 from cited_answers.pipeline.models import (
     REFUSAL_MESSAGES,
     AnswerClaim,
@@ -90,6 +92,8 @@ class Pipeline:
         self.settings = settings
         self.embedder_name = embedder_name
         self.stats = TermStats.build(c.index_text for c in corpus.chunks)
+        self.definitions = DefinitionIndex.build(corpus)
+        self.linking = LinkIndex.build(corpus)
         self.graph = self._build()
 
     # ── nodes ────────────────────────────────────────────────────────────────────────────
@@ -102,6 +106,8 @@ class Pipeline:
             chunks = self.corpus.by_article.get(key, ())
             ranked = sorted(chunks, key=lambda c: -len(q_terms & set(content_terms(c.index_text))))
             pinned.extend(Hit(c, 1.0, {"reference": 1}, pinned=True) for c in ranked[:2])
+        for d in self.definitions.lookup(question, laws):
+            pinned.append(Hit(self.corpus.by_id[d.chunk_id], 1.0, {"definition": 1}, pinned=True))
         return pinned
 
     def _retrieve(self, state: State) -> dict[str, Any]:
@@ -127,9 +133,19 @@ class Pipeline:
             merged.append(hit)
             if len(merged) >= s.top_k:
                 break
+        shown = merged[: s.max_sources]
+        # Structural context from the same article (pipeline/linking.py): the lead paragraph
+        # of an article shown only through later paragraphs, and exceptions to shown paragraphs.
+        budget = s.max_linked_sources
+        for chunk in self.linking.leads_for([h.chunk for h in shown], limit=budget):
+            shown.append(Hit(chunk, 0.0, {"lead_paragraph": 1}))
+            budget -= 1
+        for chunk in self.linking.for_chunks([h.chunk for h in shown], limit=budget):
+            shown.append(Hit(chunk, 0.0, {"exception": 1}))
+        merged = [*shown, *merged[s.max_sources :]]
         sources = [
             Source(f"S{i}", h.chunk.id, h.chunk.label, h.chunk.title, h.chunk.text)
-            for i, h in enumerate(merged[: s.max_sources], start=1)
+            for i, h in enumerate(shown, start=1)
         ]
         return {
             "laws": laws,

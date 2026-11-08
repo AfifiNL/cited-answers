@@ -230,7 +230,7 @@ def test_gemini_client_gets_location_timeout_and_retries(
     assert emb["location"] == "europe-west4"
     http = chat["http_options"]
     assert http.timeout == 30_000
-    assert http.retry_options.attempts == 4 and 429 in http.retry_options.http_status_codes
+    assert http.retry_options.attempts == 8 and 429 in http.retry_options.http_status_codes
 
 
 def test_empty_settings_values_mean_unset(monkeypatch: pytest.MonkeyPatch) -> None:
@@ -240,3 +240,59 @@ def test_empty_settings_values_mean_unset(monkeypatch: pytest.MonkeyPatch) -> No
     monkeypatch.setenv("CA_GEMINI_LOCATION", "")
     s = Settings(_env_file=None)  # type: ignore[call-arg]
     assert s.gemini_thinking_level is None and s.gemini_location is None
+
+
+# ── Judge adapters ────────────────────────────────────────────────────────────────────
+from cited_answers.providers.base import JudgeRequest  # noqa: E402
+from cited_answers.providers.prompts import (  # noqa: E402
+    JUDGE_JSON_SCHEMA,
+    JUDGE_SYSTEM_PROMPT,
+    build_judge_prompt,
+)
+
+JREQ = JudgeRequest(
+    claim="The data subject may ask for erasure.",
+    quote="The data subject shall have the right to obtain from the controller the erasure",
+    citation="GDPR Article 17(1)",
+    provision="1. The data subject shall have the right to obtain from the controller the erasure",
+)
+VERDICT = {"reason": "The provision grants this right.", "verdict": "supported"}
+
+
+def test_judge_prompt_holds_claim_quote_and_full_provision() -> None:
+    prompt = build_judge_prompt(JREQ)
+    assert JREQ.claim in prompt and JREQ.quote in prompt and JREQ.provision in prompt
+    assert "GDPR Article 17(1)" in prompt
+    assert JUDGE_JSON_SCHEMA["properties"]["verdict"]["enum"] == [
+        "supported",
+        "partially_supported",
+        "not_supported",
+    ]
+    assert list(JUDGE_JSON_SCHEMA["properties"]) == ["reason", "verdict"]  # reasoning first
+
+
+def test_openai_judge_request_shape_and_errors() -> None:
+    chat = Recorder(chat_reply(json.dumps(VERDICT)))
+    judge = openai_mod.OpenAIJudgeModel("o-judge", client=fake_openai(chat=chat))
+    assert judge.judge(JREQ).verdict == "supported"
+    call = chat.calls[0]
+    assert call["messages"][0]["content"] == JUDGE_SYSTEM_PROMPT
+    assert call["response_format"]["json_schema"]["schema"] == JUDGE_JSON_SCHEMA
+    bad = openai_mod.OpenAIJudgeModel("o", client=fake_openai(chat=Recorder(chat_reply("nope"))))
+    with pytest.raises(ProviderError, match="judge schema"):
+        bad.judge(JREQ)
+    refusing = openai_mod.OpenAIJudgeModel(
+        "o", client=fake_openai(chat=Recorder(chat_reply("", refusal="no")))
+    )
+    with pytest.raises(ProviderError, match="declined"):
+        refusing.judge(JREQ)
+
+
+def test_gemini_judge_request_shape(genai: None) -> None:
+    from cited_answers.providers.base import Judgement
+
+    gen = Recorder(SimpleNamespace(text=json.dumps(VERDICT)))
+    judge = gemini_mod.GeminiJudgeModel("g-judge", client=fake_gemini(gen=gen))
+    assert judge.judge(JREQ).verdict == "supported"
+    cfg = gen.calls[0]["config"]
+    assert cfg.system_instruction == JUDGE_SYSTEM_PROMPT and cfg.response_schema is Judgement

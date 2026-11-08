@@ -1,10 +1,24 @@
-# Everything here runs offline and costs nothing unless you set CA_PROVIDER/CA_EMBEDDER to a
-# live vendor yourself. `make check` is what CI runs.
+# Everything here runs offline and costs nothing, except `record-live`, which calls the live
+# models on purpose. `make check` is what CI runs.
 UV      ?= uv
 OFFLINE := CA_PROVIDER=mock CA_EMBEDDER=hash CA_STORE=memory
 
+# Record/replay of a live run (providers/replay.py). Recorded with the offline hashing embedder,
+# so replay needs no vectors and no network.
+CASSETTE       := evals/fixtures/live-answers.jsonl
+JUDGE_CASSETTE := evals/fixtures/judge-set.jsonl
+REPLAY := CA_PROVIDER=replay CA_EMBEDDER=hash CA_STORE=memory CA_CASSETTE=$(CASSETTE) \
+          CA_FAITHFULNESS_SCORER=judge CA_JUDGE_PROVIDER=replay
+REPLAY_GATE := --gate evals/gate_judge.json --baseline evals/baseline_replay.json
+# The live configuration that `record-live` records. Needs Vertex AI credentials (ADC) and
+# GOOGLE_CLOUD_PROJECT in the environment, and costs money.
+LIVE ?= CA_PROVIDER=gemini CA_GEMINI_USE_VERTEX=true CA_GEMINI_MODEL=gemini-3.6-flash \
+        CA_GEMINI_THINKING_LEVEL=low CA_GEMINI_LOCATION=eu \
+        CA_FAITHFULNESS_SCORER=judge CA_JUDGE_PROVIDER=gemini \
+        CA_JUDGE_MODEL=gemini-3.1-pro-preview CA_JUDGE_LOCATION=global
+
 .PHONY: help install install-localpg lint typecheck test test-pg eval eval-baseline check \
-        serve ask ingest db-up index
+        eval-replay eval-replay-baseline record-live serve ask ingest db-up index
 
 help:            ## list targets
 	@grep -E '^[a-z-]+:.*## ' $(MAKEFILE_LIST) | sed 's/:.*## /\t/'
@@ -34,7 +48,19 @@ eval:            ## offline eval gate: exits 1 when a score is below its floor o
 eval-baseline:   ## re-record evals/baseline.json (review the diff before committing it)
 	$(OFFLINE) $(UV) run cited-answers eval --update-baseline
 
-check: lint typecheck test eval  ## everything CI runs
+eval-replay:     ## replay the recorded live run (model + judge) offline; fails on any change
+	$(REPLAY) $(UV) run cited-answers eval $(REPLAY_GATE) --out evals/reports/replay
+	CA_JUDGE_PROVIDER=replay CA_CASSETTE=$(JUDGE_CASSETTE) $(UV) run cited-answers judge-eval
+
+eval-replay-baseline: ## re-record evals/baseline_replay.json from the cassette (review the diff)
+	$(REPLAY) $(UV) run cited-answers eval $(REPLAY_GATE) --out evals/reports/replay --update-baseline
+
+record-live:     ## re-record both cassettes with the live models (costs money, needs credentials)
+	$(LIVE) CA_EMBEDDER=hash CA_STORE=memory CA_RECORD_CASSETTE=$(CASSETTE) \
+	  $(UV) run cited-answers eval --workers 3 $(REPLAY_GATE) --out evals/reports/record
+	$(LIVE) CA_RECORD_CASSETTE=$(JUDGE_CASSETTE) $(UV) run cited-answers judge-eval --workers 2
+
+check: lint typecheck test eval eval-replay  ## everything CI runs
 
 serve:           ## HTTP API on http://127.0.0.1:8000 (docs at /docs)
 	$(UV) run cited-answers serve

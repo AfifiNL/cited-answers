@@ -1,0 +1,50 @@
+{
+  "config": {
+    "model": "replay:gemini:gemini-3.6-flash:thinking-low",
+    "embedder": "hash-768",
+    "store": "memory",
+    "scorer": "judge:replay:gemini:gemini-3.1-pro-preview",
+    "corpus_version": "cbd4f9deaa0bc9cd"
+  },
+  "metrics": {
+    "all": {
+      "items": 87,
+      "answerable": 67,
+      "unanswerable": 20,
+      "faithfulness": 0.8721,
+      "citation_precision": 0.9365,
+      "citation_hit_rate": 0.9841,
+      "refusal_accuracy": 0.954,
+      "unsafe_answer_rate": 0.0,
+      "false_refusal_rate": 0.0597,
+      "retrieval_recall": 0.9701,
+      "claims": 172
+    },
+    "dev": {
+      "items": 44,
+      "answerable": 34,
+      "unanswerable": 10,
+      "faithfulness": 0.8242,
+      "citation_precision": 0.957,
+      "citation_hit_rate": 1.0,
+      "refusal_accuracy": 0.9318,
+      "unsafe_answer_rate": 0.0,
+      "false_refusal_rate": 0.0882,
+      "retrieval_recall": 0.9412,
+      "claims": 91
+    },
+    "test": {
+      "items": 43,
+      "answerable": 33,
+      "unanswerable": 10,
+      "faithfulness": 0.9259,
+      "citation_precision": 0.9167,
+      "citation_hit_rate": 0.9688,
+      "refusal_accuracy": 0.9767,
+      "unsafe_answer_rate": 0.0,
+      "false_refusal_rate": 0.0303,
+      "retrieval_recall": 1.0,
+      "claims": 81
+    }
+  }
+}

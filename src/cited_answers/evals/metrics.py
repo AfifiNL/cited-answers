@@ -6,10 +6,13 @@ resolves to, through the citation's article key. If a refactor ever maps S2 to t
 chunk, or a citation to the wrong article, the verifier may still pass but this metric drops.
 
 Definitions (all over the items of one run):
-  faithfulness        supported claims / all claims in answered items. A claim is supported
-                      when its quote is verbatim in the cited article, every number it states
-                      appears in that quote (or in the citation label), and at least half of
-                      its content words appear in the quote.
+  faithfulness        supported claims / all claims in answered items. Who decides "supported"
+                      is a FaithfulnessScorer. The default, QuoteScorer: the quote is verbatim
+                      in the cited article, every number the claim states appears in that quote
+                      (or in the citation label), and at least half of its content words appear
+                      in the quote. JudgeScorer (evals/judge.py) adds an LLM judge on top, for
+                      what word overlap cannot see: "shall" turned into "may", a dropped
+                      exception, the controller's duty given to the processor.
   citation_precision  mean over answered, answerable items of |cited ∩ gold| / |cited|,
                       at article level (GDPR Article 17(1) and 17(3) both count as gdpr:art17).
   citation_hit_rate   share of answered, answerable items that cite at least one gold article.
@@ -24,7 +27,7 @@ from __future__ import annotations
 
 from collections.abc import Sequence
 from dataclasses import dataclass, field
-from typing import Any
+from typing import Any, Protocol, runtime_checkable
 
 from cited_answers.corpus import Corpus
 from cited_answers.pipeline.models import AnswerResult
@@ -101,21 +104,59 @@ def claim_supported(corpus: Corpus, article_key: str, label: str, text: str, quo
     return ""
 
 
-def score_item(corpus: Corpus, item: EvalItem, result: AnswerResult) -> ItemOutcome:
+@dataclass(frozen=True)
+class ClaimToScore:
+    text: str
+    quote: str
+    article_key: str  # "gdpr:art17", resolved from the answer's citation
+    label: str  # "GDPR Article 17(1)"
+
+
+@dataclass(frozen=True)
+class ClaimVerdict:
+    supported: bool
+    reason: str = ""  # empty when supported
+
+
+@runtime_checkable
+class FaithfulnessScorer(Protocol):
+    name: str
+
+    def score(self, corpus: Corpus, claim: ClaimToScore) -> ClaimVerdict: ...
+
+
+class QuoteScorer:
+    """Deterministic: verbatim quote in the cited article, numbers, word overlap."""
+
+    name = "quote"
+
+    def score(self, corpus: Corpus, claim: ClaimToScore) -> ClaimVerdict:
+        reason = claim_supported(corpus, claim.article_key, claim.label, claim.text, claim.quote)
+        return ClaimVerdict(not reason, reason)
+
+
+def score_item(
+    corpus: Corpus,
+    item: EvalItem,
+    result: AnswerResult,
+    scorer: FaithfulnessScorer | None = None,
+) -> ItemOutcome:
+    scorer = scorer or QuoteScorer()
     by_ref = {c.ref: c for c in result.citations}
     supported = 0
     unsupported: list[str] = []
     for claim in result.claims:
         cit = by_ref.get(claim.ref)
-        reason = (
-            "claim has no citation"
-            if cit is None
-            else claim_supported(corpus, cit.article_key, cit.label, claim.text, claim.quote)
-        )
-        if reason:
-            unsupported.append(reason)
+        if cit is None:
+            verdict = ClaimVerdict(False, "claim has no citation")
         else:
+            verdict = scorer.score(
+                corpus, ClaimToScore(claim.text, claim.quote, cit.article_key, cit.label)
+            )
+        if verdict.supported:
             supported += 1
+        else:
+            unsupported.append(verdict.reason)
     retrieved: list[str] = []
     for entry in result.trace or []:
         if entry.get("node") == "retrieve":

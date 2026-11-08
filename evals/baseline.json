@@ -3,6 +3,7 @@
     "model": "mock-extractive",
     "embedder": "hash-768",
     "store": "memory",
+    "scorer": "quote",
     "corpus_version": "cbd4f9deaa0bc9cd"
   },
   "metrics": {
@@ -11,13 +12,13 @@
       "answerable": 67,
       "unanswerable": 20,
       "faithfulness": 1.0,
-      "citation_precision": 0.8955,
-      "citation_hit_rate": 0.8955,
+      "citation_precision": 0.8806,
+      "citation_hit_rate": 0.8806,
       "refusal_accuracy": 0.9885,
       "unsafe_answer_rate": 0.05,
       "false_refusal_rate": 0.0,
       "retrieval_recall": 0.9701,
-      "claims": 103
+      "claims": 102
     },
     "dev": {
       "items": 44,
@@ -37,13 +38,13 @@
       "answerable": 33,
       "unanswerable": 10,
       "faithfulness": 1.0,
-      "citation_precision": 0.9394,
-      "citation_hit_rate": 0.9394,
+      "citation_precision": 0.9091,
+      "citation_hit_rate": 0.9091,
       "refusal_accuracy": 0.9767,
       "unsafe_answer_rate": 0.1,
       "false_refusal_rate": 0.0,
       "retrieval_recall": 1.0,
-      "claims": 52
+      "claims": 51
     }
   }
 }

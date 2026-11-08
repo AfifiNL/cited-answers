@@ -179,3 +179,23 @@ def test_gate_file_is_sane() -> None:
         "unsafe_answer_rate",
     }
     assert 0 < gate["max_regression"] <= 0.05
+
+
+def test_targets_are_reported_and_regression_checked() -> None:
+    gate = {
+        "scopes": ["all"],
+        "metrics": {"unsafe_answer_rate": {"max": 0.1}},
+        "targets": {"faithfulness": {"min": 0.9}},
+        "max_regression": 0.02,
+    }
+
+    def rep(faith: float) -> dict:
+        config = {"model": "m", "embedder": "e", "store": "s", "scorer": "q", "corpus_version": "v"}
+        metrics = {"all": {"faithfulness": faith, "unsafe_answer_rate": 0.0}}
+        return {"config": config, "metrics": metrics}
+
+    failures, notes = check_gate(rep(0.85), gate, None)
+    assert failures == [] and any("target not met: all.faithfulness" in n for n in notes)
+    base = rep(0.85)
+    failures, _ = check_gate(rep(0.80), gate, base)
+    assert failures == ["all.faithfulness regressed from 0.8500 to 0.8000 (allowed 0.02)"]

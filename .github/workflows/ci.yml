@@ -1,6 +1,8 @@
-# Offline by design: no API keys, no paid calls. The answer model is the deterministic mock,
-# so every score is reproducible and a drop is a real regression in retrieval, gating,
-# citation handling or the corpus.
+# Offline by design: no API keys, no paid calls. Two gates:
+#  * the deterministic mock model: a drop is a real regression in retrieval, gating, citation
+#    handling or the corpus;
+#  * a replay of a recorded live run (Gemini answers + LLM-judge verdicts, evals/fixtures/):
+#    gates the code around the model, and fails if the model's inputs changed since recording.
 name: ci
 
 on:
@@ -38,9 +40,9 @@ jobs:
       CA_STORE: memory
       CA_TEST_DATABASE_URL: postgresql://cited:cited@localhost:5432/cited
     steps:
-      - uses: actions/checkout@v4
+      - uses: actions/checkout@v7
 
-      - uses: astral-sh/setup-uv@v6
+      - uses: astral-sh/setup-uv@v10
         with:
           python-version: "3.12"
           enable-cache: true
@@ -62,9 +64,12 @@ jobs:
       - name: Eval gate (fails the build when a score drops)
         run: uv run cited-answers eval
 
+      - name: Replay gate (recorded live model and judge, no network)
+        run: make eval-replay
+
       - name: Keep the eval report
         if: always()
-        uses: actions/upload-artifact@v4
+        uses: actions/upload-artifact@v7
         with:
           name: eval-report
           path: evals/reports/

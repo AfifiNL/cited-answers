@@ -21,7 +21,14 @@ from itertools import pairwise
 
 from cited_answers.glossary import is_covered
 from cited_answers.pipeline.references import find_references, strip_references
-from cited_answers.providers.base import Claim, Draft, DraftRequest
+from cited_answers.providers.base import (
+    Claim,
+    Draft,
+    DraftRequest,
+    Judgement,
+    JudgeRequest,
+    ProviderError,
+)
 from cited_answers.text import TermStats, content_terms, split_segments
 
 EMBED_DIM = 768
@@ -136,3 +143,20 @@ class ScriptedAnswerModel:
         step = self.script[min(len(self.calls), len(self.script) - 1)]
         self.calls.append(request)
         return step(request) if callable(step) else step
+
+
+class ScriptedJudge:
+    """A judge for tests: a function of the request decides the verdict; calls are recorded."""
+
+    name = "scripted-judge"
+
+    def __init__(self, decide: Callable[[JudgeRequest], str | Exception]):
+        self.decide = decide
+        self.calls: list[JudgeRequest] = []
+
+    def judge(self, request: JudgeRequest) -> Judgement:
+        self.calls.append(request)
+        verdict = self.decide(request)
+        if isinstance(verdict, Exception):
+            raise ProviderError(str(verdict))
+        return Judgement(reason=f"scripted: {verdict}", verdict=verdict)
